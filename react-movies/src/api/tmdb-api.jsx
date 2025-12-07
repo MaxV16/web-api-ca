@@ -1,17 +1,19 @@
-export const getMovies = (year) => {
-  const yearParam = year ? `&primary_release_year=${year}` : '';
+export const getMovies = () => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&include_adult=false&include_video=false&page=1${yearParam}`
+    `http://localhost:8080/api/movies/discover`
   ).then((response) => {
     if (!response.ok) {
-      throw new Error(response.json().message);
+      return response.json().then((error) => {
+        throw new Error(error.status_message || "Something went wrong");
+      });
     }
     return response.json();
   })
   .catch((error) => {
-    throw error;
+      throw error
   });
 };
+
 
 export const getMovie = ({ queryKey }) => {
   const [, idPart] = queryKey;
