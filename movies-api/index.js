@@ -4,6 +4,7 @@ import './db';
 import cors from 'cors';
 import usersRouter from './api/users';
 import authenticate from './authenticate';
+import moviesRouter from './api/movies';   
 
 
 
@@ -29,6 +30,10 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
+
+app.use('/api/movies', moviesRouter); 
+//>>> use this after implementing authenticate and stuff..
+// app.use('/api/tasks', authenticate, tasksRouter);
 
 //Users router
 app.use('/api/users', usersRouter);
