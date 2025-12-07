@@ -15,6 +15,7 @@ export const getMovies = () => {
 };
 
 
+
 export const getMovie = ({ queryKey }) => {
   const [, idPart] = queryKey;
   const { id } = idPart;

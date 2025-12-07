@@ -6,8 +6,7 @@ export const getMovies = async () => {
     );
 
     if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
+        throw new Error(response.json().message);
     }
 
     return await response.json();
