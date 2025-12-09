@@ -26,6 +26,8 @@ const HomePage = (props) => {
     queryFn: getMovies,
   });
 
+  
+
   if (isPending) {
     return <Spinner />;
   }

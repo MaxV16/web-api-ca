@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -8,6 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from '../../contexts/authContext';
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -28,6 +29,7 @@ const SiteHeader = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   
   const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
 
   const menuOptions = [
     { label: "Home", path: "/" },
@@ -92,14 +94,46 @@ const SiteHeader = () => {
           ) : (
             <>
               {menuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  style={{ color: '#bbdefb', '&:hover': { backgroundColor: '#424242' } }}
-                  onClick={() => handleMenuSelect(opt.path)}
-                >
-                  {opt.label}
-                </Button>
-              ))}
+                  <Button
+                    key={opt.label}
+                    style={{ color: '#bbdefb', '&:hover': { backgroundColor: '#424242' } }}
+                    onClick={() => handleMenuSelect(opt.path)}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+                {/* Authentication buttons */}
+                {authContext && authContext.isAuthenticated ? (
+                  <>
+                    <Button
+                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      onClick={() => navigate('/profile')}
+                    >
+                      Profile
+                    </Button>
+                    <Button
+                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      onClick={() => { authContext.signout(); navigate('/'); }}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      onClick={() => navigate('/login')}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      onClick={() => navigate('/signup')}
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )}
             </>
           )}
         </Toolbar>

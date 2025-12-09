@@ -217,37 +217,105 @@ export const getActorMovieCredits = ({ queryKey }) => {
   });
 };
 
-// Authentication functions for the local backend
 export const login = async (username, password) => {
-  try {
-    const response = await fetch(`http://localhost:8080/api/users`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const json = await response.json();
-    if (!response.ok) {
-      return json;
-    }
+  const response = await fetch(`http://localhost:8080/api/users`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+  const json = await response.json();
+  if (!response.ok) {
     return json;
-  } catch (error) {
-    throw error;
   }
+  return json;
 };
 
 export const signup = async (username, password) => {
-  try {
-    const response = await fetch(`http://localhost:8080/api/users?action=register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    throw error;
-  }
+  const response = await fetch(`http://localhost:8080/api/users?action=register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  });
+  const json = await response.json();
+  return json;
 };
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': token ? token : ''
+  };
+};
 
+export const getFavorites = async () => {
+  const response = await fetch(`http://localhost:8080/api/users/me/favorites`, {
+    headers: getAuthHeaders()
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to fetch favorites');
+  }
+  return json;
+};
 
+export const addFavorite = async (movieId) => {
+  const response = await fetch(`http://localhost:8080/api/users/me/favorites`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ movieId })
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to add favorite');
+  }
+  return json;
+};
+
+export const removeFavorite = async (movieId) => {
+  const response = await fetch(`http://localhost:8080/api/users/me/favorites/${movieId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to remove favorite');
+  }
+  return json;
+};
+
+export const getPlaylist = async () => {
+  const response = await fetch(`http://localhost:8080/api/users/me/playlist`, {
+    headers: getAuthHeaders()
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to fetch playlist');
+  }
+  return json;
+};
+
+export const addToPlaylist = async (movie) => {
+  const response = await fetch(`http://localhost:8080/api/users/me/playlist`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ movie })
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to add to playlist');
+  }
+  return json;
+};
+
+export const removeFromPlaylist = async (movieId) => {
+  const response = await fetch(`http://localhost:8080/api/users/me/playlist/${movieId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to remove from playlist');
+  }
+  return json;
+};

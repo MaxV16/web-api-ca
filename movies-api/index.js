@@ -22,7 +22,15 @@ const errHandler = (err, req, res, next) => {
 const app = express();
 
 // Enable CORS for all requests
-app.use(cors());
+// Enable CORS and allow Authorization header for requests from the frontend
+const corsOptions = {
+  origin: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Authorization'],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.use(express.static('public'));
 
