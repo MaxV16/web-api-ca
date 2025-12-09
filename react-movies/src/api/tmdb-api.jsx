@@ -217,5 +217,37 @@ export const getActorMovieCredits = ({ queryKey }) => {
   });
 };
 
+// Authentication functions for the local backend
+export const login = async (username, password) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const json = await response.json();
+    if (!response.ok) {
+      return json;
+    }
+    return json;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const signup = async (username, password) => {
+  try {
+    const response = await fetch(`http://localhost:8080/api/users?action=register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 

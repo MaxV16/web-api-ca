@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import { MoviesContext } from "../../contexts/moviesContext";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 
 const ratings = [

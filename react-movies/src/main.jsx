@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Navigate, Routes } from "react-router";
+import { BrowserRouter, Route, Navigate, Routes } from "react-router-dom";
 import "./App.css";
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -19,7 +19,12 @@ import NowPlayingMoviesPage from "./pages/nowPlayingMovies";
 import TopRatedMoviesPage from "./pages/topRatedMovies";
 import ActorDetailsPage from "./pages/actorDetailsPage";
 import PlaylistMoviesPage from "./pages/playlistMoviesPage";
-
+import LoginPage from "./pages/loginPage";
+import SignupPage from "./pages/signupPage";
+import StartPage from "./pages/startPage";
+import ProfilePage from "./pages/profilePage";
+import AuthContextProvider from "./contexts/authContext";
+import ProtectedRoutes from "./protectedRoutes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,26 +40,34 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <SiteHeader />
-        <MoviesContextProvider>
-          <PlaylistContextProvider>
-            <Routes>
-              <Route path="/movie/popular" element={<PopularMoviesPage />} />
-              <Route path="/movies/top_rated" element={<TopRatedMoviesPage />} />
-              <Route path="/movies/trending/today" element={<TrendingTodayPage />} />
-              <Route path="/movies/trending/week" element={<TrendingWeekPage />} />
-              <Route path="/movies/now_playing" element={<NowPlayingMoviesPage />} />
-              <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
-              <Route path="/movies/playlist" element={<PlaylistMoviesPage />} />
-              <Route path="/reviews/:id" element={<MovieReviewPage />} />
-              <Route path="/reviews/form" element={<AddMovieReviewPage />} />
-              <Route path="/movies/:id" element={<MoviePage />} />
-              <Route path="/actors/:id" element={<ActorDetailsPage />} />
-              <Route path="/" element={<HomePage />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </PlaylistContextProvider>
-        </MoviesContextProvider>
+        <AuthContextProvider>
+          <SiteHeader />
+          <MoviesContextProvider>
+            <PlaylistContextProvider>
+              <Routes>
+                <Route path="/movie/popular" element={<PopularMoviesPage />} />
+                <Route path="/movies/top_rated" element={<TopRatedMoviesPage />} />
+                <Route path="/movies/trending/today" element={<TrendingTodayPage />} />
+                <Route path="/movies/trending/week" element={<TrendingWeekPage />} />
+                <Route path="/movies/now_playing" element={<NowPlayingMoviesPage />} />
+                <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+                <Route path="/movies/playlist" element={<PlaylistMoviesPage />} />
+                <Route path="/reviews/:id" element={<MovieReviewPage />} />
+                <Route path="/reviews/form" element={<AddMovieReviewPage />} />
+                <Route path="/movies/:id" element={<MoviePage />} />
+                <Route path="/actors/:id" element={<ActorDetailsPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/start" element={<StartPage />} />
+                <Route element={<ProtectedRoutes />}>
+                  <Route path="/profile" element={<ProfilePage />} />
+                </Route>
+                <Route path="/" element={<HomePage />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </PlaylistContextProvider>
+          </MoviesContextProvider>
+        </AuthContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
