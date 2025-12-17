@@ -50,8 +50,6 @@ const App = () => {
                 <Route path="/movies/trending/today" element={<TrendingTodayPage />} />
                 <Route path="/movies/trending/week" element={<TrendingWeekPage />} />
                 <Route path="/movies/now_playing" element={<NowPlayingMoviesPage />} />
-                <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
-                <Route path="/movies/playlist" element={<PlaylistMoviesPage />} />
                 <Route path="/reviews/:id" element={<MovieReviewPage />} />
                 <Route path="/reviews/form" element={<AddMovieReviewPage />} />
                 <Route path="/movies/:id" element={<MoviePage />} />
@@ -61,6 +59,8 @@ const App = () => {
                 <Route path="/start" element={<StartPage />} />
                 <Route element={<ProtectedRoutes />}>
                   <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+                  <Route path="/movies/playlist" element={<PlaylistMoviesPage />} />
                 </Route>
                 <Route path="/" element={<HomePage />} />
                 <Route path="*" element={<Navigate to="/" />} />

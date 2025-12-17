@@ -7,7 +7,7 @@ const AuthContextProvider = (props) => {
   const existingToken = localStorage.getItem("token");
   const [isAuthenticated, setIsAuthenticated] = useState(existingToken ? true : false);
   const [authToken, setAuthToken] = useState(existingToken);
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
 
   const setToken = (data) => {
     localStorage.setItem("token", data);
@@ -21,6 +21,7 @@ const AuthContextProvider = (props) => {
       setToken(result.token)
       setIsAuthenticated(true);
       setUserName(username);
+      localStorage.setItem("userName", username);
     }
   };
 
@@ -31,8 +32,10 @@ const AuthContextProvider = (props) => {
 
   const signout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userName");
     setAuthToken(null);
     setIsAuthenticated(false);
+    setUserName("");
   }
 
   return (
