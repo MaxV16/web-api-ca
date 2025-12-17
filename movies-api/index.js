@@ -4,7 +4,8 @@ import './db';
 import cors from 'cors';
 import usersRouter from './api/users';
 import authenticate from './authenticate';
-import moviesRouter from './api/movies';   
+import moviesRouter from './api/movies';
+import favoritesRouter from './api/favorites';
 
 
 
@@ -46,6 +47,8 @@ app.use('/api/movies', moviesRouter);
 //Users router
 app.use('/api/users', usersRouter);
 
+//Favorites router (protected)
+app.use('/api/favorites', authenticate, favoritesRouter);
 
 
 app.use(errHandler);
