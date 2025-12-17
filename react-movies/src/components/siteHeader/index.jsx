@@ -5,8 +5,6 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../../contexts/authContext';
 import { styled } from '@mui/material/styles';
@@ -21,9 +19,7 @@ import Divider from "@mui/material/Divider";
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 const SiteHeader = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const open = Boolean(anchorEl);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -46,9 +42,6 @@ const SiteHeader = () => {
     navigate(pageURL);
   };
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -65,6 +58,17 @@ const SiteHeader = () => {
           <Typography variant="h4" sx={{ flexGrow: 1, color: "#bbdefb" }}>
             TMDB Client
           </Typography>
+          {authContext && authContext.isAuthenticated && (
+            <Typography variant="body1" sx={{
+              color: '#bbdefb',
+              ml: 2,
+              display: { xs: 'none', md: 'inline' },
+              fontWeight: 'bold',
+              fontStyle: 'italic',
+            }}>
+              Welcome, {authContext.userName}!
+            </Typography>
+          )}
           {isMobile ? (
             <>
               <IconButton
@@ -88,6 +92,25 @@ const SiteHeader = () => {
                     </ListItemButton>
                   ))}
                   <Divider />
+                  {authContext && authContext.isAuthenticated ? (
+                    <>
+                      <ListItemButton onClick={() => { handleDrawerClose(); navigate('/profile'); }}>
+                        <ListItemText primary="Profile" />
+                      </ListItemButton>
+                      <ListItemButton onClick={() => { authContext.signout(); handleDrawerClose(); navigate('/'); }}>
+                        <ListItemText primary="Logout" />
+                      </ListItemButton>
+                    </>
+                  ) : (
+                    <>
+                      <ListItemButton onClick={() => { handleDrawerClose(); navigate('/login'); }}>
+                        <ListItemText primary="Login" />
+                      </ListItemButton>
+                      <ListItemButton onClick={() => { handleDrawerClose(); navigate('/signup'); }}>
+                        <ListItemText primary="Sign Up" />
+                      </ListItemButton>
+                    </>
+                  )}
                 </List>
               </Drawer>
             </>
@@ -96,7 +119,11 @@ const SiteHeader = () => {
               {menuOptions.map((opt) => (
                   <Button
                     key={opt.label}
-                    style={{ color: '#bbdefb', '&:hover': { backgroundColor: '#424242' } }}
+                    sx={{
+                      color: '#bbdefb',
+                      '&:hover': { backgroundColor: '#424242' },
+                      textTransform: 'none',
+                    }}
                     onClick={() => handleMenuSelect(opt.path)}
                   >
                     {opt.label}
@@ -106,13 +133,23 @@ const SiteHeader = () => {
                 {authContext && authContext.isAuthenticated ? (
                   <>
                     <Button
-                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      sx={{
+                        color: '#bbdefb',
+                        marginLeft: 2,
+                        '&:hover': { backgroundColor: '#424242' },
+                        textTransform: 'none',
+                      }}
                       onClick={() => navigate('/profile')}
                     >
                       Profile
                     </Button>
                     <Button
-                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      sx={{
+                        color: '#bbdefb',
+                        marginLeft: 2,
+                        '&:hover': { backgroundColor: '#424242' },
+                        textTransform: 'none',
+                      }}
                       onClick={() => { authContext.signout(); navigate('/'); }}
                     >
                       Logout
@@ -121,13 +158,23 @@ const SiteHeader = () => {
                 ) : (
                   <>
                     <Button
-                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      sx={{
+                        color: '#bbdefb',
+                        marginLeft: 2,
+                        '&:hover': { backgroundColor: '#424242' },
+                        textTransform: 'none',
+                      }}
                       onClick={() => navigate('/login')}
                     >
                       Login
                     </Button>
                     <Button
-                      style={{ color: '#bbdefb', marginLeft: 8 }}
+                      sx={{
+                        color: '#bbdefb',
+                        marginLeft: 2,
+                        '&:hover': { backgroundColor: '#424242' },
+                        textTransform: 'none',
+                      }}
                       onClick={() => navigate('/signup')}
                     >
                       Sign Up
