@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import HomePage from "./pages/homePage";
 import MoviePage from "./pages/movieDetailsPage";
 import FavoriteMoviesPage from "./pages/favoriteMoviesPage";
+import FavoritesCollectionPage from "./pages/favoritesCollectionPage";
 import MovieReviewPage from "./pages/movieReviewPage";
 import SiteHeader from './components/siteHeader';
 import MoviesContextProvider from "./contexts/moviesContext";
@@ -60,6 +61,7 @@ const App = () => {
                 <Route element={<ProtectedRoutes />}>
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/movies/favorites" element={<FavoriteMoviesPage />} />
+                  <Route path="/movies/favorites/collection" element={<FavoritesCollectionPage />} />
                   <Route path="/movies/playlist" element={<PlaylistMoviesPage />} />
                 </Route>
                 <Route path="/" element={<HomePage />} />

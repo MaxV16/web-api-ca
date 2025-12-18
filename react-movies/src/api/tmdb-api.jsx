@@ -291,6 +291,42 @@ export const removeFavorite = async (movieId) => {
   return json;
 };
 
+export const getFavoritesList = async () => {
+  const response = await fetch(`http://localhost:8080/api/favorites`, {
+    headers: getAuthHeaders()
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to fetch favorites list');
+  }
+  return json;
+};
+
+export const addFavoriteItem = async (movieId) => {
+  const response = await fetch(`http://localhost:8080/api/favorites`, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ movieId })
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to add favorite item');
+  }
+  return json;
+};
+
+export const removeFavoriteItem = async (movieId) => {
+  const response = await fetch(`http://localhost:8080/api/favorites/${movieId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  });
+  const json = await response.json();
+  if (!response.ok) {
+    throw new Error(json.msg || 'Failed to remove favorite item');
+  }
+  return json;
+};
+
 export const getPlaylist = async () => {
   const response = await fetch(`http://localhost:8080/api/users/me/playlist`, {
     headers: getAuthHeaders()
