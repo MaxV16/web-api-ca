@@ -1,19 +1,26 @@
 import express from 'express';
-import Favorite from './favoriteModel.js';
+import User from '../users/userModel.js';
 import authenticate from '../../authenticate/index.js';
 import asyncHandler from 'express-async-handler';
 
 const router = express.Router();
 
 router.get('/', authenticate, asyncHandler(async (req, res) => {
-    const favorites = await Favorite.find({ user: req.user._id }).sort({ createdAt: -1 });
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            msg: 'User not found',
+        });
+    }
+    const favorites = user.favorites.map(movieId => ({
+        movieId,
+        createdAt: null,
+    }));
     res.status(200).json({
         success: true,
         count: favorites.length,
-        favorites: favorites.map(fav => ({
-            movieId: fav.movieId,
-            createdAt: fav.createdAt,
-        })),
+        favorites,
     });
 }));
 
@@ -27,28 +34,30 @@ router.post('/', authenticate, asyncHandler(async (req, res) => {
         });
     }
 
-    const existing = await Favorite.findOne({
-        user: req.user._id,
-        movieId: Number(movieId),
-    });
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            msg: 'User not found',
+        });
+    }
 
-    if (existing) {
+    const id = Number(movieId);
+    if (user.favorites.includes(id)) {
         return res.status(409).json({
             success: false,
             msg: 'Movie already in favorites',
         });
     }
 
-    const favorite = await Favorite.create({
-        user: req.user._id,
-        movieId: Number(movieId),
-    });
+    user.favorites.push(id);
+    await user.save();
 
     res.status(201).json({
         success: true,
         favorite: {
-            movieId: favorite.movieId,
-            createdAt: favorite.createdAt,
+            movieId: id,
+            createdAt: null,
         },
     });
 }));
@@ -56,17 +65,25 @@ router.post('/', authenticate, asyncHandler(async (req, res) => {
 router.delete('/:movieId', authenticate, asyncHandler(async (req, res) => {
     const { movieId } = req.params;
 
-    const deleted = await Favorite.findOneAndDelete({
-        user: req.user._id,
-        movieId: Number(movieId),
-    });
+    const user = await User.findById(req.user._id);
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            msg: 'User not found',
+        });
+    }
 
-    if (!deleted) {
+    const id = Number(movieId);
+    const initialLength = user.favorites.length;
+    user.favorites = user.favorites.filter(favId => favId !== id);
+    if (user.favorites.length === initialLength) {
         return res.status(404).json({
             success: false,
             msg: 'Favorite not found',
         });
     }
+
+    await user.save();
 
     res.status(200).json({
         success: true,
