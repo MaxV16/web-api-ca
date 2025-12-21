@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'; //import mongoose for MongoDB object modeling
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema; //get mongoose Schema constructor
 
-const FavoriteSchema = new Schema({
+const FavoriteSchema = new Schema({ //define schema for favorite entries
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -19,8 +19,8 @@ const FavoriteSchema = new Schema({
     },
 });
 
-FavoriteSchema.index({ user: 1, movieId: 1 }, { unique: true });
+FavoriteSchema.index({ user: 1, movieId: 1 }, { unique: true }); //create unique compound index on user and movieId
 
-const Favorite = mongoose.model('Favorite', FavoriteSchema);
+const Favorite = mongoose.model('Favorite', FavoriteSchema); //create mongoose model named Favorite
 
-export default Favorite;
+export default Favorite; //export the Favorite model

@@ -1,14 +1,14 @@
-import React, { useState, createContext, useEffect, useContext } from "react";
-import { AuthContext } from './authContext';
-import { getPlaylist, addToPlaylist as addToPlaylistAPI, removeFromPlaylist as removeFromPlaylistAPI } from "../api/tmdb-api";
+import React, { useState, createContext, useEffect, useContext } from "react"; //import React hooks and context
+import { AuthContext } from './authContext'; //import authentication context
+import { getPlaylist, addToPlaylist as addToPlaylistAPI, removeFromPlaylist as removeFromPlaylistAPI } from "../api/tmdb-api"; //import playlist API functions
 
-export const PlaylistContext = createContext(null);
+export const PlaylistContext = createContext(null); //create playlist context
 
-const PlaylistContextProvider = (props) => {
-  const [myPlaylist, setMyPlaylist] = useState([]);
-  const authContext = useContext(AuthContext);
+const PlaylistContextProvider = (props) => { //playlist context provider component
+  const [myPlaylist, setMyPlaylist] = useState([]); //state for playlist movies
+  const authContext = useContext(AuthContext); //get authentication context
 
-  useEffect(() => {
+  useEffect(() => { //effect to fetch playlist when authentication changes
     const fetchPlaylist = async () => {
       if (authContext.isAuthenticated) {
         try {
@@ -27,7 +27,7 @@ const PlaylistContextProvider = (props) => {
     fetchPlaylist();
   }, [authContext.isAuthenticated]);
 
-  const addToPlaylist = async (movie) => {
+  const addToPlaylist = async (movie) => { //add movie to playlist
     let newPlaylist = [];
     if (!myPlaylist.some((m) => m.id === movie.id)) {
       newPlaylist = [...myPlaylist, movie];
@@ -45,7 +45,7 @@ const PlaylistContextProvider = (props) => {
     }
   };
 
-  const removeFromPlaylist = async (movie) => {
+  const removeFromPlaylist = async (movie) => { //remove movie from playlist
     const newPlaylist = myPlaylist.filter((m) => m.id !== movie.id);
     setMyPlaylist(newPlaylist);
     localStorage.setItem("myPlaylist", JSON.stringify(newPlaylist));
@@ -58,7 +58,7 @@ const PlaylistContextProvider = (props) => {
     }
   };
 
-  return (
+  return ( //render provider with value
     <PlaylistContext.Provider
       value={{
         myPlaylist,

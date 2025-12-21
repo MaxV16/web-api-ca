@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
-import { Navigate } from "react-router-dom";
-import { AuthContext } from '../contexts/authContext';
-import { Link } from "react-router-dom";
-import {
+import { useContext, useState } from "react"; //import React hooks
+import { Navigate } from "react-router-dom"; //import Navigate for redirect
+import { AuthContext } from '../contexts/authContext'; //import authentication context
+import { Link } from "react-router-dom"; //import Link for navigation
+import { //import MUI components
   Container,
   Paper,
   Typography,
@@ -11,9 +11,9 @@ import {
   Box,
   Alert,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles'; //import styled from MUI
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledPaper = styled(Paper)(({ theme }) => ({ //styled paper component
   padding: theme.spacing(4),
   marginTop: theme.spacing(8),
   display: 'flex',
@@ -23,12 +23,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: '16px',
 }));
 
-const StyledForm = styled('form')(({ theme }) => ({
+const StyledForm = styled('form')(({ theme }) => ({ //styled form
   width: '100%',
   marginTop: theme.spacing(1),
 }));
 
-const SubmitButton = styled(Button)(({ theme }) => ({
+const SubmitButton = styled(Button)(({ theme }) => ({ //styled submit button
   margin: theme.spacing(3, 0, 2),
   backgroundColor: '#1976d2',
   '&:hover': {
@@ -36,15 +36,15 @@ const SubmitButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const SignUpPage = () => {
-  const context = useContext(AuthContext);
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordAgain, setPasswordAgain] = useState("");
-  const [registered, setRegistered] = useState(false);
-  const [error, setError] = useState("");
+const SignUpPage = () => { //SignUpPage component
+  const context = useContext(AuthContext); //get authentication context
+  const [userName, setUserName] = useState(""); //state for username
+  const [password, setPassword] = useState(""); //state for password
+  const [passwordAgain, setPasswordAgain] = useState(""); //state for password confirmation
+  const [registered, setRegistered] = useState(false); //state for registration success
+  const [error, setError] = useState(""); //state for error message
 
-  const register = async () => {
+  const register = async () => { //register function
     let passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     const validPassword = passwordRegEx.test(password);
 
@@ -68,16 +68,16 @@ const SignUpPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => { //handle form submission
     e.preventDefault();
     register();
   };
 
-  if (registered === true) {
+  if (registered === true) { //redirect if registered
     return <Navigate to="/login" />;
   }
 
-  return (
+  return ( //render signup form
     <Container component="main" maxWidth="xs">
       <StyledPaper elevation={6}>
         <Typography component="h1" variant="h5" color="primary" gutterBottom>

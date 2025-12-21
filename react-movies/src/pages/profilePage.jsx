@@ -1,36 +1,36 @@
-import { useContext } from "react";
-import { AuthContext } from '../contexts/authContext';
-import { useNavigate } from "react-router-dom";
-import { Container, Typography, Button, Box, Paper, Grid, Card, CardContent, CardActions } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useContext } from "react"; //import React and useContext
+import { AuthContext } from '../contexts/authContext'; //import authentication context
+import { useNavigate } from "react-router-dom"; //import useNavigate for navigation
+import { Container, Typography, Button, Box, Paper, Grid, Card, CardContent, CardActions } from '@mui/material'; //import MUI components
+import { styled } from '@mui/material/styles'; //import styled from MUI
+import FavoriteIcon from '@mui/icons-material/Favorite'; //import favorite icon
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'; //import playlist icon
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; //import logout icon
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledPaper = styled(Paper)(({ theme }) => ({ //styled paper component
   padding: theme.spacing(6),
   marginTop: theme.spacing(4),
   backgroundColor: '#f5f5f5',
   borderRadius: '16px',
 }));
 
-const ProfileCard = styled(Card)(({ theme }) => ({
+const ProfileCard = styled(Card)(({ theme }) => ({ //styled profile card
   padding: theme.spacing(3),
   textAlign: 'center',
   backgroundColor: '#ffffff',
   boxShadow: theme.shadows[4],
 }));
 
-const ProfilePage = () => {
-  const context = useContext(AuthContext);
-  const navigate = useNavigate();
+const ProfilePage = () => { //ProfilePage component
+  const context = useContext(AuthContext); //get authentication context
+  const navigate = useNavigate(); //get navigate function
 
-  const handleLogout = () => {
+  const handleLogout = () => { //handle logout
     context.signout();
     navigate('/');
   };
 
-  if (!context.isAuthenticated) {
+  if (!context.isAuthenticated) { //check if not authenticated, show access denied
     return (
       <Container component="main" maxWidth="sm">
         <StyledPaper elevation={6}>
@@ -53,7 +53,7 @@ const ProfilePage = () => {
     );
   }
 
-  return (
+  return ( //render profile page
     <Container component="main" maxWidth="lg">
       <StyledPaper elevation={6}>
         <Typography variant="h4" color="primary" gutterBottom>

@@ -1,11 +1,11 @@
-import express from 'express';
-import User from '../users/userModel.js';
-import authenticate from '../../authenticate/index.js';
-import asyncHandler from 'express-async-handler';
+import express from 'express'; //import express framework
+import User from '../users/userModel.js'; //import User model
+import authenticate from '../../authenticate/index.js'; //import authentication middleware
+import asyncHandler from 'express-async-handler'; //import async handler for error handling
 
-const router = express.Router();
+const router = express.Router(); //create express router
 
-router.get('/', authenticate, asyncHandler(async (req, res) => {
+router.get('/', authenticate, asyncHandler(async (req, res) => { //get all favorites for authenticated user
     const user = await User.findById(req.user._id);
     if (!user) {
         return res.status(404).json({
@@ -24,7 +24,7 @@ router.get('/', authenticate, asyncHandler(async (req, res) => {
     });
 }));
 
-router.post('/', authenticate, asyncHandler(async (req, res) => {
+router.post('/', authenticate, asyncHandler(async (req, res) => { //add a movie to favorites
     const { movieId } = req.body;
 
     if (!movieId) {
@@ -62,7 +62,7 @@ router.post('/', authenticate, asyncHandler(async (req, res) => {
     });
 }));
 
-router.delete('/:movieId', authenticate, asyncHandler(async (req, res) => {
+router.delete('/:movieId', authenticate, asyncHandler(async (req, res) => { //remove a movie from favorites
     const { movieId } = req.params;
 
     const user = await User.findById(req.user._id);
@@ -91,4 +91,4 @@ router.delete('/:movieId', authenticate, asyncHandler(async (req, res) => {
     });
 }));
 
-export default router;
+export default router; //export the router

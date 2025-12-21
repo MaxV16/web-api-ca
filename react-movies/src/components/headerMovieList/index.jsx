@@ -1,16 +1,16 @@
-import React from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import { useNavigate } from "react-router-dom";
-import Typography from "@mui/material/Typography";
+import React from "react"; //import React
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"; //import back arrow icon
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward"; //import forward arrow icon
+import Paper from "@mui/material/Paper"; //import Paper component
+import IconButton from "@mui/material/IconButton"; //import IconButton component
+import { useNavigate } from "react-router-dom"; //import useNavigate for navigation
+import Typography from "@mui/material/Typography"; //import Typography component
 
-const Header = (props) => {
-  const title = props.title;
-  const navigate = useNavigate();
+const Header = (props) => { //Header component
+  const title = props.title; //extract title prop
+  const navigate = useNavigate(); //get navigate function
 
-  return (
+  return ( //render header
     <Paper
       component="div"
       sx={{

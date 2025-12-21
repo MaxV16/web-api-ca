@@ -11,7 +11,7 @@ import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 
 
-const ratings = [
+const ratings = [ //rating options
   {
     value: 5,
     label: "Excellent",
@@ -34,7 +34,7 @@ const ratings = [
   },
 ];
 
-const styles = {
+const styles = { //styles object
   root: {
     marginTop: 2,
     display: "flex",
@@ -61,41 +61,41 @@ const styles = {
   },
 };
 
-const ReviewForm = ({ movie }) => {
+const ReviewForm = ({ movie }) => { //ReviewForm component
 
-  const context = useContext(MoviesContext);
+  const context = useContext(MoviesContext); //get movies context
 
-  const [rating, setRating] = useState(3);
+  const [rating, setRating] = useState(3); //state for rating
 
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
+  const [open, setOpen] = useState(false); //state for snackbar open
+  const navigate = useNavigate(); //navigate function
 
-  const handleSnackClose = (event) => {
+  const handleSnackClose = (event) => { //handle snackbar close
     setOpen(false);
     navigate("/movies/favorites");
   };
 
 
 
-  const defaultValues = {
+  const defaultValues = { //default values for form
     author: "",
     review: "",
     agree: false,
     rating: "3",
   };
 
-  const {
+  const { //react-hook-form setup
     control,
     formState: { errors },
     handleSubmit,
     reset,
   } = useForm(defaultValues);
 
-  const handleRatingChange = (event) => {
+  const handleRatingChange = (event) => { //handle rating change
     setRating(event.target.value);
   };
 
-  const onSubmit = (review) => {
+  const onSubmit = (review) => { //submit review
     review.movieId = movie.id;
     review.rating = rating;
     
@@ -104,7 +104,7 @@ const ReviewForm = ({ movie }) => {
   };
 
 
-  return (
+  return ( //render form
     <Box component="div" sx={styles.root}>
       <Typography component="h2" variant="h3">
         Write a review

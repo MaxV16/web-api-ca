@@ -1,20 +1,20 @@
-export const getMovies = () => {
+export const getMovies = () => { //this fetches a list of movies from the backend server
   return fetch(
-    `http://localhost:8080/api/movies/discover`
+    `http://localhost:8080/api/movies/discover` //this fetches the movies from the backend server
   ).then((response) => {
-    if (!response.ok) {
+    if (!response.ok) { //error handling
       return response.json().then((error) => {
         throw new Error(error.status_message || "Something went wrong");
       });
     }
-    return response.json();
+    return response.json(); //return the response as json
   })
-  .catch((error) => {
+  .catch((error) => { //catch any errorss
       throw error
   });
 };
 
-export const getMovie = ({ queryKey }) => {
+export const getMovie = ({ queryKey }) => { //fetch a single movie by id
   const [, idPart] = queryKey;
   const { id } = idPart;
   return fetch(
@@ -30,7 +30,7 @@ export const getMovie = ({ queryKey }) => {
   });
 };
 
-export const getGenres = () => {
+export const getGenres = () => { //fetch movie genres
   return fetch(
     "http://localhost:8080/api/movies/genres"
   ).then( (response) => {
@@ -44,7 +44,7 @@ export const getGenres = () => {
   });
 };
 
-export const getUpcoming = () => {
+export const getUpcoming = () => { //fetch upcoming movies
   return fetch(
     "http://localhost:8080/api/movies/upcoming"
   ).then( (response) => {
@@ -58,7 +58,7 @@ export const getUpcoming = () => {
   });
 };
 
-export const getMovieImages = ({ queryKey }) => {
+export const getMovieImages = ({ queryKey }) => { //fetch images for a movie
   const [, idPart] = queryKey;
   const { id } = idPart;
   return fetch(
@@ -74,7 +74,7 @@ export const getMovieImages = ({ queryKey }) => {
   });
 };
 
-export const getMovieReviews = ({ queryKey }) => {
+export const getMovieReviews = ({ queryKey }) => { //fetch reviews for a movie
   const [, idPart] = queryKey;
   const { id } = idPart;
   return fetch(
@@ -90,7 +90,7 @@ export const getMovieReviews = ({ queryKey }) => {
   });
 };
 
-export const getTrendingWeek = () => {
+export const getTrendingWeek = () => { //fetch trending movies this week
   return fetch(
     `http://localhost:8080/api/movies/trending/week`
   ).then((response) => {
@@ -104,7 +104,7 @@ export const getTrendingWeek = () => {
   });
 };
 
-export const getTrendingToday = () => {
+export const getTrendingToday = () => { //fetch trending movies today
   return fetch(
     `http://localhost:8080/api/movies/trending/day`
   ).then((response) => {
@@ -118,7 +118,7 @@ export const getTrendingToday = () => {
   });
 };
 
-export const getPopularMovies = () => {
+export const getPopularMovies = () => { //fetch popular movies
   return fetch(
     `http://localhost:8080/api/movies/popular`
   ).then((response) => {
@@ -132,7 +132,7 @@ export const getPopularMovies = () => {
   });
 };
 
-export const getTopRatedMovies = () => {
+export const getTopRatedMovies = () => { //fetch top rated movies
   return fetch(
     `http://localhost:8080/api/movies/top_rated`
   ).then((response) => {
@@ -146,7 +146,7 @@ export const getTopRatedMovies = () => {
   });
 };
 
-export const getNowPlayingMovies = () => {
+export const getNowPlayingMovies = () => { //fetch now playing movies
   return fetch(
     `http://localhost:8080/api/movies/now_playing`
   ).then((response) => {
@@ -160,7 +160,7 @@ export const getNowPlayingMovies = () => {
   });
 };
 
-export const getMovieDetails = ({ queryKey }) => {
+export const getMovieDetails = ({ queryKey }) => { //fetch movie details (same as getMovie?)
   const [, idPart] = queryKey;
   const { id } = idPart;
   return fetch(
@@ -176,7 +176,7 @@ export const getMovieDetails = ({ queryKey }) => {
   });
 };
 
-export const getMovieCredits = ({ queryKey }) => {
+export const getMovieCredits = ({ queryKey }) => { //fetch movie credits
   const [, idPart] = queryKey;
   const { id } = idPart;
   return fetch(
@@ -192,7 +192,7 @@ export const getMovieCredits = ({ queryKey }) => {
   });
 };
 
-export const getActorDetails = ({ queryKey }) => {
+export const getActorDetails = ({ queryKey }) => { //fetch actor details
   const [, idPart] = queryKey;
   const { id } = idPart;
   return fetch(
@@ -208,7 +208,7 @@ export const getActorDetails = ({ queryKey }) => {
   });
 };
 
-export const getActorMovieCredits = ({ queryKey }) => {
+export const getActorMovieCredits = ({ queryKey }) => { //fetch actor's movie credits
   const [, idPart] = queryKey;
   const { id } = idPart;
   return fetch(
@@ -224,7 +224,7 @@ export const getActorMovieCredits = ({ queryKey }) => {
   });
 };
 
-export const login = async (username, password) => {
+export const login = async (username, password) => { //authenticate user
   const response = await fetch(`http://localhost:8080/api/users`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -237,7 +237,7 @@ export const login = async (username, password) => {
   return json;
 };
 
-export const signup = async (username, password) => {
+export const signup = async (username, password) => { //register new user
   const response = await fetch(`http://localhost:8080/api/users?action=register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -247,7 +247,7 @@ export const signup = async (username, password) => {
   return json;
 };
 
-const getAuthHeaders = () => {
+const getAuthHeaders = () => { //helper to get authorization headers
   const token = localStorage.getItem('token');
   return {
     'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ const getAuthHeaders = () => {
   };
 };
 
-export const getFavorites = async () => {
+export const getFavorites = async () => { //fetch user's favorites
   const response = await fetch(`http://localhost:8080/api/users/me/favorites`, {
     headers: getAuthHeaders()
   });
@@ -266,7 +266,7 @@ export const getFavorites = async () => {
   return json;
 };
 
-export const addFavorite = async (movieId) => {
+export const addFavorite = async (movieId) => { //add movie to favorites
   const response = await fetch(`http://localhost:8080/api/users/me/favorites`, {
     method: 'POST',
     headers: getAuthHeaders(),
@@ -279,7 +279,7 @@ export const addFavorite = async (movieId) => {
   return json;
 };
 
-export const removeFavorite = async (movieId) => {
+export const removeFavorite = async (movieId) => { //remove movie from favorites
   const response = await fetch(`http://localhost:8080/api/users/me/favorites/${movieId}`, {
     method: 'DELETE',
     headers: getAuthHeaders()
@@ -291,7 +291,7 @@ export const removeFavorite = async (movieId) => {
   return json;
 };
 
-export const getFavoritesList = async () => {
+export const getFavoritesList = async () => { //fetch favorites list (alternative)
   const response = await fetch(`http://localhost:8080/api/favorites`, {
     headers: getAuthHeaders()
   });
@@ -302,7 +302,7 @@ export const getFavoritesList = async () => {
   return json;
 };
 
-export const addFavoriteItem = async (movieId) => {
+export const addFavoriteItem = async (movieId) => { //add favorite item (alternative)
   const response = await fetch(`http://localhost:8080/api/favorites`, {
     method: 'POST',
     headers: getAuthHeaders(),
@@ -315,7 +315,7 @@ export const addFavoriteItem = async (movieId) => {
   return json;
 };
 
-export const removeFavoriteItem = async (movieId) => {
+export const removeFavoriteItem = async (movieId) => { //remove favorite item (alternative)
   const response = await fetch(`http://localhost:8080/api/favorites/${movieId}`, {
     method: 'DELETE',
     headers: getAuthHeaders()
@@ -327,7 +327,7 @@ export const removeFavoriteItem = async (movieId) => {
   return json;
 };
 
-export const getPlaylist = async () => {
+export const getPlaylist = async () => { //fetch user's playlist
   const response = await fetch(`http://localhost:8080/api/users/me/playlist`, {
     headers: getAuthHeaders()
   });
@@ -338,7 +338,7 @@ export const getPlaylist = async () => {
   return json;
 };
 
-export const addToPlaylist = async (movie) => {
+export const addToPlaylist = async (movie) => { //add movie to playlist
   const response = await fetch(`http://localhost:8080/api/users/me/playlist`, {
     method: 'POST',
     headers: getAuthHeaders(),
@@ -351,7 +351,7 @@ export const addToPlaylist = async (movie) => {
   return json;
 };
 
-export const removeFromPlaylist = async (movieId) => {
+export const removeFromPlaylist = async (movieId) => { //remove movie from playlist
   const response = await fetch(`http://localhost:8080/api/users/me/playlist/${movieId}`, {
     method: 'DELETE',
     headers: getAuthHeaders()

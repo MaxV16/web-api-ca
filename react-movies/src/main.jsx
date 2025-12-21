@@ -26,7 +26,7 @@ import ProfilePage from "./pages/profilePage";
 import AuthContextProvider from "./contexts/authContext";
 import ProtectedRoutes from "./protectedRoutes";
 
-const queryClient = new QueryClient({
+const queryClient = new QueryClient({ //create React Query client with default options
   defaultOptions: {
     queries: {
       staleTime: 360000,
@@ -36,7 +36,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => {
+const App = () => { //main App component
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -75,5 +75,5 @@ const App = () => {
 };
 
 
-const rootElement = createRoot(document.getElementById("root"))
-rootElement.render(<App />);
+const rootElement = createRoot(document.getElementById("root")) //create root for React rendering
+rootElement.render(<App />); //render App component

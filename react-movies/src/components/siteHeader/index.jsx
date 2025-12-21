@@ -17,17 +17,17 @@ import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
 
 
-const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
-const SiteHeader = () => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar); //to offset the content for fixed app bar
+const SiteHeader = () => { //main site header component, shows navigation and auth options
+  const [drawerOpen, setDrawerOpen] = useState(false); //state for mobile drawer
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const theme = useTheme(); //get the theme for design from MUI
+  const isMobile = useMediaQuery(theme.breakpoints.down("md")); //check if the screen is mobile size
   
-  const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
+  const navigate = useNavigate(); //for navigation between pages
+  const authContext = useContext(AuthContext); //get authentication context
 
-  const menuOptions = [
+  const menuOptions = [ //menu options for navigation
     { label: "Home", path: "/" },
     { label: "Favorites", path: "/movies/favorites" },
     { label: "Trending This Week", path: "/movies/trending/week" },
@@ -38,20 +38,20 @@ const SiteHeader = () => {
     { label: "My Playlist", path: "/movies/playlist" },
   ];
 
-  const handleMenuSelect = (pageURL) => {
+  const handleMenuSelect = (pageURL) => { //handle menu selection and navigate
     navigate(pageURL);
   };
 
 
-  const handleDrawerOpen = () => {
+  const handleDrawerOpen = () => { //open mobile drawer
     setDrawerOpen(true);
   };
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = () => { //close mobile drawer
     setDrawerOpen(false);
   };
 
-  return (
+  return ( //for rendering the site header
     <>
       <AppBar position="fixed" style={{ backgroundColor: '#212121' }}>
         <Toolbar>
@@ -92,7 +92,7 @@ const SiteHeader = () => {
                     </ListItemButton>
                   ))}
                   <Divider />
-                  {authContext && authContext.isAuthenticated ? (
+                  {authContext && authContext.isAuthenticated ? ( //if authenticated show profile and logout
                     <>
                       <ListItemButton onClick={() => { handleDrawerClose(); navigate('/profile'); }}>
                         <ListItemText primary="Profile" />
@@ -116,7 +116,7 @@ const SiteHeader = () => {
             </>
           ) : (
             <>
-              {menuOptions.map((opt) => (
+              {menuOptions.map((opt) => ( //desktop menu options
                   <Button
                     key={opt.label}
                     sx={{
@@ -129,8 +129,8 @@ const SiteHeader = () => {
                     {opt.label}
                   </Button>
                 ))}
-                {/* Authentication buttons */}
-                {authContext && authContext.isAuthenticated ? (
+
+                {authContext && authContext.isAuthenticated ? ( //if authenticated show profile and logout
                   <>
                     <Button
                       sx={{

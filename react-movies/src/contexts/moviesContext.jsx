@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
-import { AuthContext } from './authContext';
-import { getFavorites, addFavorite, removeFavorite } from "../api/tmdb-api";
+import React, { useState, useEffect, useContext } from "react"; //import React hooks and context
+import { AuthContext } from './authContext'; //import authentication context
+import { getFavorites, addFavorite, removeFavorite } from "../api/tmdb-api"; //import favorites API functions
 
-export const MoviesContext = React.createContext(null);
+export const MoviesContext = React.createContext(null); //create movies context
 
-const MoviesContextProvider = (props) => {
-  const [favorites, setFavorites] = useState([]);
-  const [myReviews, setMyReviews] = useState({});
-  const authContext = useContext(AuthContext);
+const MoviesContextProvider = (props) => { //movies context provider component
+  const [favorites, setFavorites] = useState([]); //state for favorite movie IDs
+  const [myReviews, setMyReviews] = useState({}); //state for user reviews
+  const authContext = useContext(AuthContext); //get authentication context
 
-  useEffect(() => {
+  useEffect(() => { //effect to fetch favorites when authentication changes
     const fetchFavorites = async () => {
       if (authContext.isAuthenticated) {
         try {
@@ -25,7 +25,7 @@ const MoviesContextProvider = (props) => {
     fetchFavorites();
   }, [authContext.isAuthenticated]);
 
-  const addToFavorites = async (movie) => {
+  const addToFavorites = async (movie) => { //add movie to favorites
     let newFavorites = [];
     if (!favorites.includes(movie.id)) {
       newFavorites = [...favorites, movie.id];
@@ -42,7 +42,7 @@ const MoviesContextProvider = (props) => {
     }
   };
 
-  const removeFromFavorites = async (movie) => {
+  const removeFromFavorites = async (movie) => { //remove movie from favorites
     const newFavorites = favorites.filter((mId) => mId !== movie.id);
     setFavorites(newFavorites);
     if (authContext.isAuthenticated) {
@@ -54,12 +54,12 @@ const MoviesContextProvider = (props) => {
     }
   };
 
-  const addReview = (movie, review) => {
+  const addReview = (movie, review) => { //add review for a movie
     setMyReviews({ ...myReviews, [movie.id]: review });
   };
   console.log(myReviews);
 
-  return (
+  return ( //render provider with value
     <MoviesContext.Provider
       value={{
         favorites,

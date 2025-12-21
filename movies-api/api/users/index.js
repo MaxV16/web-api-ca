@@ -1,17 +1,17 @@
-import express from 'express';
-import User from './userModel';
-import asyncHandler from 'express-async-handler';
-import jwt from 'jsonwebtoken';
-import authenticate from '../../authenticate/index.js';
+import express from 'express'; //import express framework
+import User from './userModel'; //import User model
+import asyncHandler from 'express-async-handler'; //import async handler
+import jwt from 'jsonwebtoken'; //import jwt for token generation
+import authenticate from '../../authenticate/index.js'; //import authentication middleware
 
-const router = express.Router();
+const router = express.Router(); //create express router
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res) => { //get all users (unprotected)
     const users = await User.find();
     res.status(200).json(users);
 });
 
-router.post('/', asyncHandler(async (req, res) => {
+router.post('/', asyncHandler(async (req, res) => { //handle user registration or authentication
     try {
         if (!req.body.username || !req.body.password) {
             return res.status(400).json({ success: false, msg: 'Username and password are required.' });
@@ -27,7 +27,7 @@ router.post('/', asyncHandler(async (req, res) => {
     }
 }));
 
-router.get('/me/favorites', authenticate, asyncHandler(async (req, res) => {
+router.get('/me/favorites', authenticate, asyncHandler(async (req, res) => { //get user's favorites
     const user = await User.findByUserName(req.user.username);
     if (!user) {
         return res.status(404).json({ success: false, msg: 'User not found' });
@@ -35,7 +35,7 @@ router.get('/me/favorites', authenticate, asyncHandler(async (req, res) => {
     res.status(200).json({ success: true, favorites: user.favorites });
 }));
 
-router.post('/me/favorites', authenticate, asyncHandler(async (req, res) => {
+router.post('/me/favorites', authenticate, asyncHandler(async (req, res) => { //add movie to favorites
     const { movieId } = req.body;
     if (!movieId) {
         return res.status(400).json({ success: false, msg: 'Movie ID is required' });
@@ -53,7 +53,7 @@ router.post('/me/favorites', authenticate, asyncHandler(async (req, res) => {
     res.status(200).json({ success: true, favorites: user.favorites });
 }));
 
-router.delete('/me/favorites/:movieId', authenticate, asyncHandler(async (req, res) => {
+router.delete('/me/favorites/:movieId', authenticate, asyncHandler(async (req, res) => { //remove movie from favorites
     const { movieId } = req.params;
     const user = await User.findByUserName(req.user.username);
     if (!user) {
@@ -64,7 +64,7 @@ router.delete('/me/favorites/:movieId', authenticate, asyncHandler(async (req, r
     res.status(200).json({ success: true, favorites: user.favorites });
 }));
 
-router.get('/me/playlist', authenticate, asyncHandler(async (req, res) => {
+router.get('/me/playlist', authenticate, asyncHandler(async (req, res) => { //get user's playlist
     const user = await User.findByUserName(req.user.username);
     if (!user) {
         return res.status(404).json({ success: false, msg: 'User not found' });
@@ -72,7 +72,7 @@ router.get('/me/playlist', authenticate, asyncHandler(async (req, res) => {
     res.status(200).json({ success: true, playlist: user.playlist });
 }));
 
-router.post('/me/playlist', authenticate, asyncHandler(async (req, res) => {
+router.post('/me/playlist', authenticate, asyncHandler(async (req, res) => { //add movie to playlist
     const movie = req.body.movie;
     if (!movie || !movie.id) {
         return res.status(400).json({ success: false, msg: 'Movie object with id is required' });
@@ -90,7 +90,7 @@ router.post('/me/playlist', authenticate, asyncHandler(async (req, res) => {
     res.status(200).json({ success: true, playlist: user.playlist });
 }));
 
-router.delete('/me/playlist/:movieId', authenticate, asyncHandler(async (req, res) => {
+router.delete('/me/playlist/:movieId', authenticate, asyncHandler(async (req, res) => { //remove movie from playlist
     const { movieId } = req.params;
     const user = await User.findByUserName(req.user.username);
     if (!user) {
@@ -101,7 +101,7 @@ router.delete('/me/playlist/:movieId', authenticate, asyncHandler(async (req, re
     res.status(200).json({ success: true, playlist: user.playlist });
 }));
 
-async function registerUser(req, res) {
+async function registerUser(req, res) { //register user function
   try {
     await User.create(req.body);
     res.status(201).json({ success: true, msg: 'User successfully created.' });
@@ -115,7 +115,7 @@ async function registerUser(req, res) {
   }
 }
 
-async function authenticateUser(req, res) {
+async function authenticateUser(req, res) { //authenticate user function
     const user = await User.findByUserName(req.body.username);
     if (!user) {
         return res.status(401).json({ success: false, msg: 'Authentication failed. User not found.' });
@@ -131,4 +131,4 @@ async function authenticateUser(req, res) {
 }
 
 
-export default router;
+export default router; //export router

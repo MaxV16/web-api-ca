@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose from 'mongoose'; //import mongoose for MongoDB
+import bcrypt from 'bcrypt'; //import bcrypt for password hashing
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema; //get mongoose Schema constructor
 
-const UserSchema = new Schema({
+const UserSchema = new Schema({ //define user schema
   username: { type: String, unique: true, required: true},
   password: {
     type: String,
@@ -20,15 +20,15 @@ const UserSchema = new Schema({
   playlist: { type: [Schema.Types.Mixed], default: [] }
 });
 
-UserSchema.methods.comparePassword = async function (passw) { 
+UserSchema.methods.comparePassword = async function (passw) { //instance method to compare password
     return await bcrypt.compare(passw, this.password); 
 };
 
-UserSchema.statics.findByUserName = function (username) {
+UserSchema.statics.findByUserName = function (username) { //static method to find user by username
   return this.findOne({ username: username });
 };
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function(next) { //pre-save hook to hash password
   const saltRounds = 10;
   if (this.isModified('password') || this.isNew) {
     try {
@@ -45,4 +45,4 @@ UserSchema.pre('save', async function(next) {
 });
 
 
-export default mongoose.model('User', UserSchema);
+export default mongoose.model('User', UserSchema); //export User model

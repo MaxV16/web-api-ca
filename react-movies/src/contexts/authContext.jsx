@@ -1,21 +1,21 @@
-import { useState, createContext } from "react";
-import { login, signup } from "../api/tmdb-api";
+import { useState, createContext } from "react"; //import React hooks and context
+import { login, signup } from "../api/tmdb-api"; //import login and signup API functions
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext(null); //create authentication context
 
-const AuthContextProvider = (props) => {
-  const existingToken = localStorage.getItem("token");
-  const [isAuthenticated, setIsAuthenticated] = useState(existingToken ? true : false);
-  const [authToken, setAuthToken] = useState(existingToken);
-  const [userName, setUserName] = useState(localStorage.getItem("userName") || "");
+const AuthContextProvider = (props) => { //authentication context provider component
+  const existingToken = localStorage.getItem("token"); //retrieve existing token from localStorage
+  const [isAuthenticated, setIsAuthenticated] = useState(existingToken ? true : false); //state for authentication status
+  const [authToken, setAuthToken] = useState(existingToken); //state for auth token
+  const [userName, setUserName] = useState(localStorage.getItem("userName") || ""); //state for username
 
-  const setToken = (data) => {
+  const setToken = (data) => { //function to set token in localStorage and state
     localStorage.setItem("token", data);
     setAuthToken(data);
     setIsAuthenticated(true);
   }
 
-  const authenticate = async (username, password) => {
+  const authenticate = async (username, password) => { //authenticate user with username and password
     const result = await login(username, password);
     if (result.token) {
       setToken(result.token)
@@ -25,12 +25,12 @@ const AuthContextProvider = (props) => {
     }
   };
 
-  const register = async (username, password) => {
+  const register = async (username, password) => { //register new user
     const result = await signup(username, password);
     return result.success;
   };
 
-  const signout = () => {
+  const signout = () => { //sign out user
     localStorage.removeItem("token");
     localStorage.removeItem("userName");
     setAuthToken(null);
@@ -38,7 +38,7 @@ const AuthContextProvider = (props) => {
     setUserName("");
   }
 
-  return (
+  return ( //render provider with value
     <AuthContext.Provider
       value={{
         isAuthenticated,

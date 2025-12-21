@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { AuthContext } from '../contexts/authContext';
-import { Link } from "react-router-dom";
-import { Container, Typography, Button, Box, Paper } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { useContext } from "react"; //import React and useContext
+import { AuthContext } from '../contexts/authContext'; //import authentication context
+import { Link } from "react-router-dom"; //import Link for navigation
+import { Container, Typography, Button, Box, Paper } from '@mui/material'; //import MUI components
+import { styled } from '@mui/material/styles'; //import styled from MUI
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledPaper = styled(Paper)(({ theme }) => ({ //styled paper component
   padding: theme.spacing(6),
   marginTop: theme.spacing(8),
   textAlign: 'center',
@@ -12,7 +12,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: '16px',
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme }) => ({ //styled button
   margin: theme.spacing(1),
   backgroundColor: '#1976d2',
   '&:hover': {
@@ -20,10 +20,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const StartPage = () => {
-  const context = useContext(AuthContext);
+const StartPage = () => { //StartPage component
+  const context = useContext(AuthContext); //get authentication context
 
-  return (
+  return ( //render start page
     <Container component="main" maxWidth="md">
       <StyledPaper elevation={6}>
         <Typography variant="h3" color="primary" gutterBottom>
